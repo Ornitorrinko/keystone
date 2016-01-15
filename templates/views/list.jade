@@ -62,7 +62,7 @@ block content
         //- Sort
         if items.results.length
           if sort.by
-            span.text-muted &nbsp;ordered by&nbsp;
+            span.text-muted &nbsp;ordenado por&nbsp;
           else
             span.text-muted &mdash;
           span.dropdown.list-sort-dropdown
@@ -164,8 +164,8 @@ block content
                   if search
                     a(href='/keystone/#{list.path}', title='Clear search').search-list-clear &times;
                 .searchbox-button: button(type='submit').btn.btn-default.btn-search.searchbox-submit
-                  span.visible-xs Go
-                  span.hidden-xs Search
+                  span.visible-xs Ir
+                  span.hidden-xs Buscar
               //- .search-field
                 input(type='text', name='search', placeholder='Search ' + list.plural.toLowerCase(), value=search).form-control
               //- span.search-button: button(type='submit').btn.btn-default.btn-search
@@ -173,7 +173,7 @@ block content
                 span.hidden-xs Search
               .dropdown-inline.list-filter-dropdown
                 button(type='button', data-toggle='dropdown').btn.btn-default.dropdown-toggle
-                  | Add Filter 
+                  | Adicionar filtro 
                   b.caret
                 ul.dropdown-menu: each el in list.uiElements
                   if el.type == 'heading'
@@ -191,7 +191,7 @@ block content
                 a(href=download_link, data-confirm="Download a .csv of #{utils.plural(items.total, '* ' + list.singular, '* ' + list.plural).toLowerCase()}?").btn.btn-default Download
               div(style='margin-right: 10px;').dropdown.list-columns-dropdown.pull-right
                 button(type='button', data-toggle='dropdown').btn.btn-default.dropdown-toggle
-                  | Columns 
+                  | Colunas 
                   b.caret
                 ul.dropdown-menu
                   each el in list.uiElements
@@ -374,8 +374,8 @@ block content
                     data-ref-plural=field.refList.plural).ui-select2-ref
                 
         .list-filters-action
-          button(type='submit').btn.btn-default.btn-filter Search
-          a(href='/keystone/#{list.path}').btn.btn-link.btn-cancel clear filters
+          button(type='submit').btn.btn-default.btn-filter Buscar
+          a(href='/keystone/#{list.path}').btn.btn-link.btn-cancel limpar filtros
       
   if items.results.length
     //-
@@ -386,7 +386,7 @@ block content
       if items.totalPages > 1
         +pagination(items)
       else
-        .count Showing #{utils.plural(items.total, '* ' + list.singular, '* ' + list.plural)}
+        .count Mostrando #{utils.plural(items.total, '* ' + list.singular, '* ' + list.plural)}
     
     
     - var sortable = list.get('sortable') && !list.get('sortContext') && sort.by == 'sortOrder'
