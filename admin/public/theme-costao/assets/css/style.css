@@ -2246,8 +2246,9 @@ label {
 }
 
 .black-bg, #sidebar {
-  background: #1856a7;
-  border-color: #1856a7;
+  /*background: #1856a7;*/
+  background: #113463;
+  /*border-color: #1856a7;*/
   color: #ffba00;
 }
 
