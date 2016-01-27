@@ -80,12 +80,14 @@ s3multiple.prototype.addToSchema = function() {
 
   var paths = this.paths = {
     // fields
-    filename:   this._path.append('.filename'),
+    filename:     this._path.append('.filename'),
     originalname: this._path.append('.originalname'),
-    path:     this._path.append('.path'),
-    size:     this._path.append('.size'),
-    filetype:   this._path.append('.filetype'),
-    url:      this._path.append('.url'),
+    path:         this._path.append('.path'),
+    size:         this._path.append('.size'),
+    filetype:     this._path.append('.filetype'),
+    url:          this._path.append('.url'),
+    title:        this._path.append('.title'),
+    description:  this._path.append('.description'),
     // virtuals
     exists:     this._path.append('.exists'),
     upload:     this._path.append('_upload'),
@@ -93,12 +95,14 @@ s3multiple.prototype.addToSchema = function() {
   };
 
   var schemaPaths = this._path.addTo({}, [{
-    filename:		String,
+    filename:		  String,
     originalname:	String,
-    path:			String,
-    size:			Number,
-    filetype:		String,
-    url:			String
+    path:			    String,
+    size:			    Number,
+    filetype:		  String,
+    url:			    String,
+    title:        String,
+    description:  String
   }]);
 
   schema.add(schemaPaths);
@@ -447,7 +451,9 @@ s3multiple.prototype.uploadFile = function(item, file, update, callback) {
       path: path,
       size: file.size,
       filetype: filetype,
-      url: url
+      url: url,
+      title: file.title,
+      description: file.description
     };
 
     if (update) {
@@ -466,7 +472,7 @@ s3multiple.prototype.uploadFile = function(item, file, update, callback) {
  * @api public
  */
 
-s3multiple.prototype.uploadFiles = function(item, files, update, callback) {	
+s3multiple.prototype.uploadFiles = function(item, files, update, callback) {
 
   var field = this;
 
@@ -533,7 +539,10 @@ s3multiple.prototype.getRequestHandler = function(item, req, paths, callback) {
     if (!req.files || !req.files[paths.upload]) return callback();
 
     var upFiles = req.files[paths.upload];
+
     if (!Array.isArray(upFiles)) {
+      upFiles['title'] = _.last(req.body[paths.title]);
+      upFiles['description'] = _.last(req.body[paths.description]);
       upFiles = [upFiles];
     }
 
@@ -542,8 +551,7 @@ s3multiple.prototype.getRequestHandler = function(item, req, paths, callback) {
     upFiles = _.filter(upFiles, function(f) { return typeof f.name !== 'undefined' && f.name.length > 0 && f.size > 0; });
 
     if (upFiles.length > 0) {
-      console.log('uploading files:');
-      console.log(upFiles);
+      console.log('uploading files:', upFiles);
       return field.uploadFiles(item, upFiles, true, callback);
     }
 

@@ -8,6 +8,16 @@ var Thumbnail = React.createClass({
 
   displayName: 'S3MultipleField',
 
+  setTitle: function(event) {
+    this.props.title = event.target.value;
+    this.forceUpdate();
+  },
+
+  setDescription: function(event) {
+    this.props.description = event.target.value;
+    this.forceUpdate();
+  },
+
   render: function() {
     var iconClassName, imageDetails;
 
@@ -25,7 +35,7 @@ var Thumbnail = React.createClass({
     var height = this.props.height;
     if (width && height) title = width + ' x ' + height;
 
-    var actionLabel = this.props.deleted ? 'Undo' : 'Remove';
+    var actionLabel = this.props.deleted ? 'Desfazer' : 'Remover';
 
     if (!this.props.isQueued) {
       imageDetails = (
@@ -42,6 +52,13 @@ var Thumbnail = React.createClass({
             <img style={{ height: '90' }} className='img-load' src={this.props.url} />
             <span className={iconClassName} />
           </a>
+          <br/>
+
+          <span>Titulo</span>
+          <input type='text' name='multipleFiles.title' className='form-control' value={this.props.title}  onBlur={this.setTitle.bind(this)} />
+
+          <span>Descrição</span>
+          <input type='text' name='multipleFiles.description' className='form-control' value={this.props.description} onBlur={this.setDescription.bind(this)} />
         </div>
 
         {imageDetails}
@@ -153,22 +170,22 @@ module.exports = Field.create({
       var imageText = count === 1 ? 'image' : 'images';
 
       body.push(<div key={queueType + '-toolbar'} className={queueType + '-queued' + ' pull-left'}>
-        <div className={'alert alert-' + alertType}>{count} {imageText} {action} - save to confirm</div>
+        <div className={'alert alert-' + alertType}>{count} {imageText} {action} - salve para confirmar</div>
       </div>);
     };
 
-    push('upload', 'success', this.getCount('isQueued'), 'queued for upload');
-    push('delete', 'danger', this.getCount('deleted'), 'removed');
+    push('upload', 'success', this.getCount('isQueued'), 'na pilha para upload');
+    push('delete', 'danger', this.getCount('deleted'), 'removido');
 
     var clearFilesButton;
     if (this.hasFiles()) {
-      clearFilesButton = <button type='button' className='btn btn-default btn-upload' onClick={this.clearFiles}>Clear selection</button>;
+      clearFilesButton = <button type='button' className='btn btn-default btn-upload' onClick={this.clearFiles}>Limpar</button>;
     }
 
     return (
       <div className='images-toolbar row col-sm-3 col-md-12'>
         <div className='pull-left'>
-          <button type='button' className='btn btn-default btn-upload' onClick={this.changeImage}>Select files</button>
+          <button type='button' className='btn btn-default btn-upload' onClick={this.changeImage}>Selecionar arquivos</button>
           {clearFilesButton}
         </div>
         {body}
@@ -187,7 +204,7 @@ module.exports = Field.create({
         </div>
 
         <div className='image-details'>
-          <span className='image-message'>Click to upload</span>
+          <span className='image-message'>Fazer upload</span>
         </div>
       </div>
     );
