@@ -15,17 +15,19 @@ var router = express.Router();
 /* Prepare browserify bundles */
 
 var bundles = {
-	fields: browserify('fields.js', 'FieldTypes'),
-	home: browserify('views/home.js'),
-	item: browserify('views/item.js'),
-	list: browserify('views/list.js')
+  fields: browserify('fields.js', 'FieldTypes'),
+  home: browserify('views/home.js'),
+  item: browserify('views/item.js'),
+  list: browserify('views/list.js'),
+  twitter: browserify('views/twitter.js')
 };
 
 router.prebuild = function() {
-	bundles.fields.build();
-	bundles.home.build();
-	bundles.item.build();
-	bundles.list.build();
+  bundles.twitter.build();
+  bundles.fields.build();
+  bundles.home.build();
+  bundles.item.build();
+  bundles.list.build();
 };
 
 /* Prepare LESS options */
@@ -33,17 +35,18 @@ router.prebuild = function() {
 var reactSelectPath = path.join(path.dirname(require.resolve('react-select')), '..');
 
 var lessOptions = {
-	render: {
-		modifyVars: {
-			reactSelectPath: JSON.stringify(reactSelectPath)
-		}
-	}
+  render: {
+    modifyVars: {
+      reactSelectPath: JSON.stringify(reactSelectPath)
+    }
+  }
 };
 
 /* Configure router */
 
 router.use('/styles', less(__dirname + '../../public/styles', lessOptions));
 router.use(express.static(__dirname + '../../public'));
+router.get('/js/twitter.js', bundles.twitter.serve);
 router.get('/js/fields.js', bundles.fields.serve);
 router.get('/js/home.js', bundles.home.serve);
 router.get('/js/item.js', bundles.item.serve);
