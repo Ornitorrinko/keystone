@@ -9,16 +9,6 @@ Premium: http://www.gridgum.com
 /* Import fonts */
 @import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
 
-/* COSTAO */
-a.cards-media:hover {
-  text-decoration: none;
-  background: none;
-}
-
-h1 {
-  padding-bottom: 30px;
-}
-
 /* BASIC THEME CONFIGURATION */
 body {
     color: #797979;
@@ -408,7 +398,6 @@ ul.sidebar-menu li a.active i {
 /* MAIN CONTENT CONFIGURATION */
 #main-content {
     margin-left: 210px;
-    padding: 80px;
 }
 
 .header, .footer {
@@ -421,11 +410,6 @@ ul.sidebar-menu li a.active i {
     left: 0;
     right: 0;
     z-index: 1002;
-}
-
-.dashboard-itens a:hover {
-  text-decoration: none;
-  background: none;
 }
 
 .black-bg {
@@ -2254,4 +2238,69 @@ label {
 
 .site-min-height {
     min-height: 900px;
+}
+
+#main-content {
+  height: 100%;
+  padding: 80px 15px 50px 15px;
+}
+
+.black-bg, #sidebar {
+  /*background: #1856a7;*/
+  background: #113463;
+  /*border-color: #1856a7;*/
+  color: #ffba00;
+}
+
+ul.sidebar-menu li a {
+  color: #ffba00;
+}
+
+
+ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
+  background: #ffba00;
+  color: #1856a7;
+}
+
+ul.sidebar-menu li a.active i, ul.sidebar-menu li a:hover i, ul.sidebar-menu li a:focus i,
+ul.sidebar-menu li a.active i {
+  color: #1856a7;
+}
+
+a.logo {
+  color: #ffba00;
+}
+
+ul.top-menu > li > a {
+  color: #fff;
+  border-color: #fff !important;
+}
+
+.bg-theme {
+  background-color: #ffba00;
+  color: #1856a7;
+}
+
+ul.top-menu > li > .logout {
+  background-color: #ffba00;
+  border-color: #ffba00 !important;
+  color: #1856a7;
+  font-weight: bold;
+}
+
+.site-footer {
+  background-color: #1856a7;
+  border-color: #1856a7 !important;
+  color: #ffba00;
+}
+
+.ds h3, .green-panel {
+  background-color: #1856a7;
+  color: #ffba00;
+}
+
+.btn.btn-create {
+  background-color: #1856a7 !important;
+  background-image: linear-gradient(to bottom, #1e61b9 0, #134c97 100%) !important;
+  border: 0;
 }

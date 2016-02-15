@@ -1,0 +1,14 @@
+extends ../layout/admin
+
+block js
+  //- - var getListMeta = function(list) { return _.pick(list, ['key', 'label', 'path']); }
+  //- script.
+  //-   Keystone.nav = !{JSON.stringify(nav)};
+  //-   Keystone.lists = !{JSON.stringify(_.map(lists, getListMeta))};
+  //-   Keystone.orphanedLists = !{JSON.stringify(orphanedLists.map(getListMeta))};
+  script(src='/keystone/js/packages.js')
+  script(src='/keystone/js/twitter.js')
+
+block content
+  div#twitter-view
+              

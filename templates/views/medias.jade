@@ -1,0 +1,45 @@
+extends ../layout/admin
+
+block js
+  //- - var getListMeta = function(list) { return _.pick(list, ['key', 'label', 'path']); }
+  //- script.
+  //-   Keystone.nav = !{JSON.stringify(nav)};
+  //-   Keystone.lists = !{JSON.stringify(_.map(lists, getListMeta))};
+  //-   Keystone.orphanedLists = !{JSON.stringify(orphanedLists.map(getListMeta))};
+  //- script(src='/keystone/js/packages.js')
+  //- script(src='/keystone/js/medias.js')
+
+block content
+  section.wrapper
+    .row
+      h1 Mídias Sociais
+      p Aqui você gerencia suas publicações de redes sociais para exibir no portal :)
+      
+      .col-lg-4.col-md-4.col-sm-4.mb
+        a(href="/keystone/medias/twitter").cards-media
+          .twitter-panel.pn
+            i.fa.fa-twitter.fa-4x
+            p Gerencie os tweets relacionados ao Costão do Santinho !
+            //- p.user @Alvrz_is
+          
+      .col-lg-4.col-md-4.col-sm-4.mb
+        a(href="/keystone/medias/instagram").cards-media
+          .instagram-panel.pn
+            i.fa.fa-instagram.fa-4x
+            p
+              | Gerencie os posts do Instagram relacionados ao Costão do Santinho !
+            
+      .col-lg-4.col-md-4.col-sm-4.mb
+        a(href="/keystone/medias/facebook").cards-media
+          .content-panel.pn
+            #profile-02
+              .user
+                i.fa.fa-facebook.fa-4x
+                h4 facebook
+            .pr2-social.centered
+              a(href='#')
+                
+              a(href='#')
+                i.fa.fa-facebook
+              a(href='#')
+              
