@@ -19,15 +19,19 @@ var bundles = {
   home: browserify('views/home.js'),
   item: browserify('views/item.js'),
   list: browserify('views/list.js'),
-  twitter: browserify('views/twitter.js')
+  twitter: browserify('views/twitter.js'),
+  facebook: browserify('views/facebook.js'),
+  instagram: browserify('views/instagram.js')
 };
 
 router.prebuild = function() {
-  bundles.twitter.build();
   bundles.fields.build();
   bundles.home.build();
   bundles.item.build();
   bundles.list.build();
+  bundles.twitter.build();
+  bundles.facebook.build();
+  bundles.instagram.build();
 };
 
 /* Prepare LESS options */
@@ -46,10 +50,12 @@ var lessOptions = {
 
 router.use('/styles', less(__dirname + '../../public/styles', lessOptions));
 router.use(express.static(__dirname + '../../public'));
-router.get('/js/twitter.js', bundles.twitter.serve);
 router.get('/js/fields.js', bundles.fields.serve);
 router.get('/js/home.js', bundles.home.serve);
 router.get('/js/item.js', bundles.item.serve);
 router.get('/js/list.js', bundles.list.serve);
+router.get('/js/twitter.js', bundles.twitter.serve);
+router.get('/js/facebook.js', bundles.facebook.serve);
+router.get('/js/instagram.js', bundles.instagram.serve);
 
 module.exports = router;

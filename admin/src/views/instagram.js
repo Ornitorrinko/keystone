@@ -5,7 +5,7 @@ import moment from 'moment';
 
 var View = React.createClass({
 
-  displayName: 'TwitterView',
+  displayName: 'InstagramView',
 
   getInitialState: function() {
     return {
@@ -22,37 +22,42 @@ var View = React.createClass({
 
   },
 
-  renderTweets: function() {
+  renderInstagramPosts: function() {
     var self = this;
+
+    if (!this.state.hashtag) {
+      alert("é obrigatório informar uma hashtag :)")
+      return
+    }
     $.ajax({
       method: 'get',
-      url: '/api/v1/tweets/' + this.state.hashtag
+      url: '/api/v1/instagram/hashtag/' + this.state.hashtag
     })
-    .done(function(result) {
+    .done(function(response) {
       var _arr = [];
-      if (result.list.length) {
-        _.each(result.list, (element) => {
+      if (response.result.data.length) {
+        _.each(response.result.data, (element) => {
           _arr.push(self.createTableItem(element))
         })
 
         // render table
         self.setState({
           tableData: _arr,
-          tweets: result.list
+          instagramPosts: response.result.data
         })
       }
     })
     .fail(function(error) {
-      alert("Ops :( Não foi possível obter os tweets, tente novamente em instantes")
+      alert("Ops :( Não foi possível obter os instagramPosts, tente novamente em instantes")
     })
   },
 
-  approveTweet: function(item) {
+  approveInstaPost: function(item) {
     var self = this;
-    item['type'] = 'twitter'
+    item['type'] = 'instagram';
     item = self.convertToMedia(item)
 
-    // save approved tweet to media
+    // save approved post to media
     $.ajax({
       method: 'post',
       url: '/api/v1/medias/approveMedia',
@@ -61,21 +66,21 @@ var View = React.createClass({
     })
     .done(function(result) {
       // remove line item from table
-      alert("Tweet aprovado, estará disponível no portal")
-      self.rejectTweet(item)
+      alert("Post aprovado, estará disponível no portal")
+      self.rejectInstaPost(item)
     })
     .fail(function(error) {
-      alert("Ops :( Não foi possível aprovar os tweets, tente novamente em instantes")
+      alert("Ops :( Não foi possível aprovar os instagramPosts, tente novamente em instantes")
     })
   },
 
-  rejectTweet: function(tweet) {
+  rejectInstaPost: function(post) {
     // call api
     // remove from list
     var _arr = []
     var self = this
-    var lines = _.filter(this.state.tweets, (item) => {
-      return tweet.refId !== item.id
+    var lines = _.filter(this.state.instagramPosts, (item) => {
+      return post.refId !== item.id
     })
 
     _.each(lines, (item) => {
@@ -84,20 +89,22 @@ var View = React.createClass({
 
     this.setState({
       tableData: _arr,
-      tweets: lines
+      instagramPosts: lines
     })
   },
 
   createTableItem: function(item) {
-    console.log(item);
+    let url = `http://instagram.com/${item.user.username}`
+    let createdAt = moment.unix(item.created_time)
+    let formattedDate = createdAt.format("DD/MM/YY HH:mm")
     return (
       <tr key={item.id}>
-        <td>@{item.user.screenName}</td>
-        <td className="hidden-phone">{item.text}</td>
-        <td>{item.createdAt} </td>
+        <td><a href={url} target="_blank">@{item.user.username}</a></td>
+        <td><a href={item.link} target="_blank"><img src={item.images.thumbnail.url} /></a></td>
+        <td>{formattedDate} </td>
         <td>
-          <button onClick={this.approveTweet.bind(this, item)} className="btn btn-success btn-xs"><i className="fa fa-check"></i></button>
-          <button onClick={this.rejectTweet.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button>
+          <button onClick={this.approveInstaPost.bind(this, item)} className="btn btn-success btn-xs"><i className="fa fa-check"></i></button>
+          <button onClick={this.rejectInstaPost.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button>
         </td>
       </tr>
     )
@@ -106,14 +113,14 @@ var View = React.createClass({
   convertToMedia: function(item) {
     var Media = {
       refId: item.id,
-      text: item.text,
-      user: item.user.name,
-      nickname: item.user.screenName,
-      url:  item.user.profileImageUrl,
-      createdAt: item.objDate,
+      text: item.caption.text,
+      user: item.user.full_name,
+      nickname: item.user.username,
+      url:  item.link,
+      createdAt: item.created_time,
       type: item.type,
-      profileImageUrl: item.user.profileImageUrl,
-      backgroundImageUrl: ''
+      profileImageUrl: item.user.profile_picture,
+      backgroundImageUrl: item.images.standard_resolution.url
     }
 
     return Media
@@ -123,7 +130,7 @@ var View = React.createClass({
     return (
       <section className="wrapper">
         <div className="row">
-          <h1>Moderação de posts do Twitter</h1>
+          <h1>Moderação de mídias do Instagram</h1>
         </div>
         <div className="row">
           <div className="col-md-6">
@@ -132,14 +139,14 @@ var View = React.createClass({
                 <label for="exampleInputEmail2" className="sr-only">Busque pela hashtag</label>
                 <input id="exampleInputEmail2" type="text" value={this.state.hashtag} onChange={this.handleChange.bind(this)} className="form-control"/>
               </div>
-              <button type="button" onClick={this.renderTweets.bind(this)} className="btn btn-theme">Ir</button>
+              <button type="button" onClick={this.renderInstagramPosts.bind(this)} className="btn btn-theme">Ir</button>
             </form>
           </div>
           <table className="table table-striped table-advance table-hover">
             <thead>
               <tr>
                 <th><i className="fa fa-bullhorn"></i> usuario</th>
-                <th className="hidden-phone"><i className="fa fa-question-circle"></i> tweet</th>
+                <th className="hidden-phone"><i className="fa fa-question-circle"></i> post</th>
                 <th><i className="fa fa-bookmark"></i> data</th>
                 <th></th>
               </tr>
@@ -155,4 +162,4 @@ var View = React.createClass({
 
 });
 
-React.render(<View />, document.getElementById('twitter-view'));
+React.render(<View />, document.getElementById('instagram-view'));
