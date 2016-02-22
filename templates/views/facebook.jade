@@ -6,68 +6,11 @@ block js
   //-   Keystone.nav = !{JSON.stringify(nav)};
   //-   Keystone.lists = !{JSON.stringify(_.map(lists, getListMeta))};
   //-   Keystone.orphanedLists = !{JSON.stringify(orphanedLists.map(getListMeta))};
-  //- script(src='/keystone/js/packages.js')
-  //- script(src='/keystone/js/medias.js')
+  script(src='/keystone/js/packages.js')
+  script(src='/keystone/js/facebook.js')
 
 block content
-  section.wrapper
-    .row
-      h1 Moderação de posts do Facebook
+  div#facebook-view
       
-    .row
-      .col-md-6
-      
-        form.form-inline(role='form')
-          
-            .form-group
-              label.sr-only(for='exampleInputEmail2') Busque pela hashtag
-              input#exampleInputEmail2.form-control(type='text', placeholder='Busque pela hashtag')
-            button.btn.btn-theme(type='submit') Ir
-        
-      table.table.table-striped.table-advance.table-hover
-        thead
-          tr
-            th
-              i.fa.fa-bullhorn
-              |  usuario
-            th.hidden-phone
-              i.fa.fa-question-circle
-              |  post
-            th
-              i.fa.fa-bookmark
-              |  data
-            th
-        tbody
-          tr
-            td
-              a(href='basic_table.html#') Company Ltd
-            td.hidden-phone Lorem Ipsum dolor
-            td 12000.00$ 
-            td
-              button.btn.btn-success.btn-xs
-                i.fa.fa-check
-              button.btn.btn-danger.btn-xs
-                i.fa.fa-trash-o
-          tr
-            td
-              a(href='basic_table.html#')
-                | Dashgum co
-            td.hidden-phone Lorem Ipsum dolor
-            td 17900.00$ 
-            td
-              button.btn.btn-success.btn-xs
-                i.fa.fa-check
-              button.btn.btn-danger.btn-xs
-                i.fa.fa-trash-o
-          tr
-            td
-              a(href='basic_table.html#')
-                | Another Co
-            td.hidden-phone Lorem Ipsum dolor
-            td 14400.00$ 
-            td
-              button.btn.btn-success.btn-xs
-                i.fa.fa-check
-              button.btn.btn-danger.btn-xs
-                i.fa.fa-trash-o
+    
               

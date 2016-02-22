@@ -30,24 +30,19 @@ var View = React.createClass({
       method: 'get',
       url: '/api/v1/facebook/feed'
     })
-    .done(function(result) {
-      console.log(result);
+    .done(function(data) {
+      console.log(data);
       var _arr = [];
       var _gallery = [];
-      if (result.list) {
-        _.each(result.list.posts, (element) => {
+      if (data.result) {
+        _.each(data.result, (element) => {
           _arr.push(self.createTableItem(element))
         })
-
-        // _.each(result.list.photos, (element) => {
-        //   _gallery.push(self.createGalleryItem(element))
-        // })
 
         // render table
         self.setState({
           tableData: _arr,
-          galleryData: _gallery,
-          posts: result.list.posts
+          posts: data.result
         })
       }
     })
@@ -95,6 +90,25 @@ var View = React.createClass({
     })
   },
 
+  deleteMedia: function(item) {
+    var self = this;
+    item = self.convertToMedia(item)
+
+    $.ajax({
+      method: 'post',
+      url: '/api/v1/medias/deleteMedia',
+      dataType: 'json',
+      data: item
+    })
+    .done(function(result) {
+      alert("Post removido, não estará mais disponível no portal")
+      self.rejectPost(item)
+    })
+    .fail(function(error) {
+      alert("Ops :( Não foi possível remover este post, tente novamente em instantes")
+    })
+  },
+
   convertToMedia: function(item) {
     var Media = {
       refId: item.id,
@@ -113,15 +127,32 @@ var View = React.createClass({
 
   createTableItem: function(item) {
     let story = item.story || ''
+    let styleTd = {
+      width: '60%'
+    }
+    let buttonAction;
+
+    // if item is already added, we need to show the icon to remove it.
+    // if not added, icon to save it :)
+    if (item.added) {
+      buttonAction = (
+        <button onClick={this.deleteMedia.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button>
+      )
+    } else {
+      buttonAction = (
+        <button onClick={this.approvePost.bind(this, item)} className="btn btn-success btn-xs"><i className="fa fa-check"></i></button>
+      )
+    }
+
     return (
       <tr key={item.id}>
-        <td>
+        <td style={styleTd}>
           <a href={item.link}>{item.message}</a>
         </td>
         <td>{item.created_time} </td>
         <td>
-          <button onClick={this.approvePost.bind(this, item)} className="btn btn-success btn-xs"><i className="fa fa-check"></i></button>
-          <button onClick={this.rejectPost.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button>
+          {buttonAction}
+          <button onClick={this.rejectPost.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-times"></i></button>
         </td>
       </tr>
     )
@@ -155,15 +186,6 @@ var View = React.createClass({
           <h1>Moderação de posts do Facebook</h1>
         </div>
         <div className="row">
-          <div className="col-md-6">
-            <form role="form" className="form-inline">
-              <div className="form-group">
-                <label for="exampleInputEmail2" className="sr-only">Busque os posts da página do costão</label>
-                <input id="exampleInputEmail2" type="text" value={this.state.hashtag} onChange={this.handleChange.bind(this)} className="form-control"/>
-              </div>
-              <button type="button" onClick={this.renderPosts.bind(this)} className="btn btn-theme">Buscar :)</button>
-            </form>
-          </div>
           <table className="table table-striped table-advance table-hover">
             <thead>
               <tr>

@@ -24,6 +24,7 @@ var View = React.createClass({
 
   renderTweets: function() {
     var self = this;
+    self.setState({loading: true})
     $.ajax({
       method: 'get',
       url: '/api/v1/tweets/' + this.state.hashtag
@@ -38,7 +39,8 @@ var View = React.createClass({
         // render table
         self.setState({
           tableData: _arr,
-          tweets: result.list
+          tweets: result.list,
+          loading: false
         })
       }
     })
@@ -88,16 +90,49 @@ var View = React.createClass({
     })
   },
 
+  deleteMedia: function(item) {
+    var self = this;
+    item['type'] = 'twitter';
+    item = self.convertToMedia(item)
+
+    $.ajax({
+      method: 'post',
+      url: '/api/v1/medias/deleteMedia',
+      dataType: 'json',
+      data: item
+    })
+    .done(function(result) {
+      alert("Tweet removido, não estará mais disponível no portal")
+      self.rejectPost(item)
+    })
+    .fail(function(error) {
+      alert("Ops :( Não foi possível remover este vídeo, tente novamente em instantes")
+    })
+  },
+
   createTableItem: function(item) {
-    console.log(item);
+    let buttonAction;
+
+    // if item is already added, we need to show the icon to remove it.
+    // if not added, icon to save it :)
+    if (item.added) {
+      buttonAction = (
+        <button onClick={this.deleteMedia.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button>
+      )
+    } else {
+      buttonAction = (
+        <button onClick={this.approveTweet.bind(this, item)} className="btn btn-success btn-xs"><i className="fa fa-check"></i></button>
+      )
+    }
+
     return (
       <tr key={item.id}>
         <td>@{item.user.screenName}</td>
         <td className="hidden-phone">{item.text}</td>
         <td>{item.createdAt} </td>
         <td>
-          <button onClick={this.approveTweet.bind(this, item)} className="btn btn-success btn-xs"><i className="fa fa-check"></i></button>
-          <button onClick={this.rejectTweet.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button>
+          {buttonAction}
+          <button onClick={this.rejectTweet.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-times"></i></button>
         </td>
       </tr>
     )
@@ -120,6 +155,7 @@ var View = React.createClass({
   },
 
   render: function() {
+    let loading = this.state.loading ? 'Aguarde...' : ''
     return (
       <section className="wrapper">
         <div className="row">
@@ -133,6 +169,7 @@ var View = React.createClass({
                 <input id="exampleInputEmail2" type="text" value={this.state.hashtag} onChange={this.handleChange.bind(this)} className="form-control"/>
               </div>
               <button type="button" onClick={this.renderTweets.bind(this)} className="btn btn-theme">Ir</button>
+              <span>{loading}</span>
             </form>
           </div>
           <table className="table table-striped table-advance table-hover">

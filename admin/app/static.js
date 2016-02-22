@@ -21,7 +21,8 @@ var bundles = {
   list: browserify('views/list.js'),
   twitter: browserify('views/twitter.js'),
   facebook: browserify('views/facebook.js'),
-  instagram: browserify('views/instagram.js')
+  instagram: browserify('views/instagram.js'),
+  youtube: browserify('views/youtube.js')
 };
 
 router.prebuild = function() {
@@ -32,6 +33,7 @@ router.prebuild = function() {
   bundles.twitter.build();
   bundles.facebook.build();
   bundles.instagram.build();
+  bundles.youtube.build();
 };
 
 /* Prepare LESS options */
@@ -57,5 +59,6 @@ router.get('/js/list.js', bundles.list.serve);
 router.get('/js/twitter.js', bundles.twitter.serve);
 router.get('/js/facebook.js', bundles.facebook.serve);
 router.get('/js/instagram.js', bundles.instagram.serve);
+router.get('/js/youtube.js', bundles.youtube.serve);
 
 module.exports = router;
