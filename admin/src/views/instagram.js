@@ -25,6 +25,8 @@ var View = React.createClass({
   renderInstagramPosts: function() {
     var self = this;
 
+    self.setState({loading: true});
+
     if (!this.state.hashtag) {
       alert("é obrigatório informar uma hashtag :)")
       return
@@ -43,7 +45,8 @@ var View = React.createClass({
         // render table
         self.setState({
           tableData: _arr,
-          instagramPosts: response.result.data
+          instagramPosts: response.result.data,
+          loading: false
         })
       }
     })
@@ -127,6 +130,7 @@ var View = React.createClass({
   },
 
   render: function() {
+    let loading = this.state.loading ? 'Aguarde...' : ''
     return (
       <section className="wrapper">
         <div className="row">
@@ -140,6 +144,7 @@ var View = React.createClass({
                 <input id="exampleInputEmail2" type="text" value={this.state.hashtag} onChange={this.handleChange.bind(this)} className="form-control"/>
               </div>
               <button type="button" onClick={this.renderInstagramPosts.bind(this)} className="btn btn-theme">Ir</button>
+              <span>{loading}</span>
             </form>
           </div>
           <table className="table table-striped table-advance table-hover">

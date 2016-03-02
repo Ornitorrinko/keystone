@@ -26,6 +26,7 @@ var View = React.createClass({
 
   renderPosts: function() {
     var self = this;
+    self.setState({loading: true});
     $.ajax({
       method: 'get',
       url: '/api/v1/facebook/feed'
@@ -42,7 +43,8 @@ var View = React.createClass({
         // render table
         self.setState({
           tableData: _arr,
-          posts: data.result
+          posts: data.result,
+          loading: false
         })
       }
     })
@@ -180,10 +182,13 @@ var View = React.createClass({
   },
 
   render: function() {
+    let loading = this.state.loading ? 'Aguarde...' : '';
     return (
       <section className="wrapper">
         <div className="row">
           <h1>Moderação de posts do Facebook</h1>
+          <span></span>
+          <span>{loading}</span>
         </div>
         <div className="row">
           <table className="table table-striped table-advance table-hover">
