@@ -117,11 +117,11 @@ var View = React.createClass({
       text: item.message,
       user: item.from.name,
       nickname: item.from.name,
-      url:  item.actions ? item.actions[0].link : item.link,
+      url:  item.actions ? item.actions[0].link : item.picture,
       createdAt: item.created_time,
       type: item.type,
       profileImageUrl: '',
-      backgroundImageUrl: item.link
+      backgroundImageUrl: item.picture
     }
 
     return Media
@@ -133,9 +133,10 @@ var View = React.createClass({
       width: '60%'
     }
     let buttonAction;
+    let formatedDate = moment(item.created_time).format("DD/MM/YYYY HH:mm")
 
     // if item is already added, we need to show the icon to remove it.
-    // if not added, icon to save it :)
+    // if not added, show icon to save it :)
     if (item.added) {
       buttonAction = (
         <button onClick={this.deleteMedia.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-trash-o"></i></button>
@@ -151,7 +152,8 @@ var View = React.createClass({
         <td style={styleTd}>
           <a href={item.link}>{item.message}</a>
         </td>
-        <td>{item.created_time} </td>
+        <td>{formatedDate} </td>
+        <td><img src={item.picture}/></td>
         <td>
           {buttonAction}
           <button onClick={this.rejectPost.bind(this, item)} className="btn btn-danger btn-xs"><i className="fa fa-times"></i></button>
@@ -196,6 +198,7 @@ var View = React.createClass({
               <tr>
                 <th className="hidden-phone"><i className="fa fa-question-circle"></i> post</th>
                 <th><i className="fa fa-bookmark"></i> data</th>
+                <th>imagem</th>
                 <th></th>
               </tr>
             </thead>
