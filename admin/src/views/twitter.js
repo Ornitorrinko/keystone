@@ -144,7 +144,7 @@ var View = React.createClass({
       text: item.text,
       user: item.user.name,
       nickname: item.user.screenName,
-      url:  item.user.profileImageUrl,
+      url:  item.link,
       createdAt: item.objDate,
       type: item.type,
       profileImageUrl: item.user.profileImageUrl,
