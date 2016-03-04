@@ -117,11 +117,11 @@ var View = React.createClass({
       text: item.message,
       user: item.from.name,
       nickname: item.from.name,
-      url:  item.actions ? item.actions[0].link : item.picture,
+      url:  item.actions ? item.actions[0].link : item.full_picture,
       createdAt: item.created_time,
       type: item.type,
       profileImageUrl: '',
-      backgroundImageUrl: item.picture
+      backgroundImageUrl: item.full_picture
     }
 
     return Media
