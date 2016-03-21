@@ -54,7 +54,7 @@ var View = React.createClass({
     .done(function(data) {
 
       if (!data.success) {
-        return alert("Não foi possível carregar os vídeos do seu canal")
+        return alert("Não foi possível carregar os vídeos do seu canal: " + JSON.stringify(data))
       }
       
       if (data.result) {
@@ -69,7 +69,7 @@ var View = React.createClass({
     })
     .fail(function(error) {
       console.log(error);
-      alert("Ops :( Não foi possível obter os posts, tente novamente em instantes")
+      alert("Ops :( Não foi possível obter os posts, tente novamente em instantes: " + JSON.stringify(error))
     })
   },
 
