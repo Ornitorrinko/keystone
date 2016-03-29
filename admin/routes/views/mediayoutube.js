@@ -14,7 +14,7 @@ exports = module.exports = function(req, res) {
 
 		var url = 'https://accounts.google.com/o/oauth2/token';
 		// var redirect_uri = keystone.get('env') == 'development' ? 'http://localhost:3000/keystone/medias/youtube' : 'http://costao.com.br/keystone/medias/youtube';
-		var redirect_uri = 'http://costao.mktbt.com/keystone/medias/youtube';
+		var redirect_uri = 'http://costao.com.br/keystone/medias/youtube';
 		var params ={
 			client_id: '867553353887-ogkmdg74kjbg6mhqs6m21jn11ap5ga2n.apps.googleusercontent.com',
 			client_secret: '_zIXCAIHGSEG-fSLEfozsKX5',
